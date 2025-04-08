@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineDictionary.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/OnlineDictionary.styles.css" asp-append-version="true" />
+</head>
+@if (!SignInManager.IsSignedIn(User))
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="d-flex flex-column gap-4">
+            <a class="btn btn-dark btn-lg px-5 py-3 text-uppercase fw-bold"asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="btn btn-dark btn-lg px-5 py-3 text-uppercase fw-bold"asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </div>
+    </div>
+}
