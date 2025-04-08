@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using OnlineDictionary.DataAccess.Data;
 using OnlineDictionary.DataAccess.Repository.IRepository;
-using OnlineDictionary.Models;
 
 namespace OnlineDictionary.DataAccess.Repository
 {
@@ -16,8 +15,12 @@ namespace OnlineDictionary.DataAccess.Repository
         {
             _db = db;
             ApplicationUser = new ApplicationUserRepository(_db);
+            Word = new WordRepository(_db);
+            Language = new LanguageRepository(_db);
         }
         public IApplicationUserRepository ApplicationUser { get; private set; }
+        public IWordRepository Word { get; }
+        public ILanguageRepository Language { get; }
         public void Save()
         {
             _db.SaveChanges();

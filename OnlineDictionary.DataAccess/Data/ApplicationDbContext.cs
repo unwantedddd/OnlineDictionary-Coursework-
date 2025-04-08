@@ -16,5 +16,7 @@ namespace OnlineDictionary.DataAccess.Data
         {
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Word> Words { get; set; }
+        public DbSet<Language> Languages { get; set; }
     }
 }

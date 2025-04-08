@@ -123,7 +123,7 @@ namespace OnlineDictionary.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        return RedirectToPage("/Index"); // или на любую твою "домашнюю" страницу
+                        return RedirectToPage("/Index");
                     }
                 }
                 if (result.RequiresTwoFactor)

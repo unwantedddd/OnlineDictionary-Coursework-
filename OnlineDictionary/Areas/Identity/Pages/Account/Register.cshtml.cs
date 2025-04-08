@@ -106,7 +106,7 @@ namespace OnlineDictionary.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Home/Home/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -123,9 +123,11 @@ namespace OnlineDictionary.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User created a new account with password.");
 
+                    await _signInManager.SignInAsync(user, isPersistent: true);
+
                     var userId = await _userManager.GetUserIdAsync(user);
 
-                    return LocalRedirect(returnUrl); // <- сюда
+                    return LocalRedirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)
