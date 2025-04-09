@@ -1,0 +1,51 @@
+﻿@{
+}
+@model OnlineDictionary.Models.ViewModels.WordVM
+
+<form method="post" asp-action="EditWord" enctype="multipart/form-data">
+	<div class="border p-3">
+		<h2 class="text-dark">Edit word</h2>
+		<hr />
+		<div class="d-flex justify-content-between">
+			<div class="col-8">
+				<div class="form-floating mb-1">
+					<input asp-for="Name" class="form-control"></input>
+					<label asp-for="Name"></label>
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-1">
+					<textarea asp-for="Description" class="form-control"></textarea>
+					<label asp-for="Description"></label>
+					<span asp-validation-for="Description" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-2">
+					<select asp-for="LanguageId" id="catFamily" class="form-select">
+						@foreach (var item in Model.Languages)
+						{
+							if (item.Id == Model.LanguageId)
+							{
+								<option value="@item.Id" selected>@item.Name.ToString()</option>
+							}
+							else
+							{
+								<option value="@item.Id">@item.Name.ToString()</option>
+							}
+						}
+					</select>
+					<label asp-for="Language">Language</label>
+					<span asp-validation-for="LanguageId" class="text-danger"></span>
+				</div>
+				<div class="d-flex flex-row mx-3 gap-3">
+					<button type="submit" class="btn btn-primary w-100 text-white">Update</button>
+					<a asp-controller="Admin" asp-action="ManageWords" class="btn btn-secondary w-100">Back</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

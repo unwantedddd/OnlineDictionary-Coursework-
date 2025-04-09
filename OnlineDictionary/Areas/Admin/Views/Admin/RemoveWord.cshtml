@@ -1,0 +1,19 @@
+﻿@model OnlineDictionary.Models.Word
+
+<form method="post" asp-action="RemoveWord">
+	<input asp-for="Id" hidden />
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-dark">Delete word</h2>
+			<hr />
+		</div>
+		<button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+		<a asp-controller="Admin" asp-action="ManageWords" class="btn btn-secondary" style="width:150px;">Back</a>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

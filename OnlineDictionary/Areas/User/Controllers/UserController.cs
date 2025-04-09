@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineDictionary.DataAccess.Repository.IRepository;
 using OnlineDictionary.Models;
@@ -7,6 +8,7 @@ using OnlineDictionary.Utility;
 namespace OnlineDictionary.Areas.User.Controllers
 {
     [Area("User")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

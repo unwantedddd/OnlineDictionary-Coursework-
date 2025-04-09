@@ -4,6 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -43,7 +44,7 @@
                 {
                     <form method="get" action="" class="d-flex w-50 justify-content-center">
                         <i class="bi bi-search fs-4 me-1"></i>
-                        <input class="form-control rounded-4 bg-white text-dark w-50" type="text" name="search" placeholder="Введіть свій запит" />
+                        <input class="form-control rounded-4 bg-white text-dark w-50" type="text" name="search" placeholder="Enter your request" />
                     </form>
                     <div class="flex-grow-1"></div>
                 }
