@@ -13,6 +13,11 @@
 			<input asp-for="Name" class="form-control" />
 			<span asp-validation-for="Name" class="text-danger"></span>
 		</div>
+		<div class="mb-3">
+			<label asp-for="Code"></label>
+			<input asp-for="Code" class="form-control" />
+			<span asp-validation-for="Code" class="text-danger"></span>
+		</div>
 		<button type="submit" class="btn btn-primary w-100 text-white">Update</button>
 		<a asp-controller="Admin" asp-action="ManageLanguage" class="btn btn-secondary w-100">Back</a>
 	</div>

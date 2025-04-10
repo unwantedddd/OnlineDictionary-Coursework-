@@ -222,7 +222,7 @@ namespace OnlineDictionary.Areas.Admin.Controllers
         // POST
         [HttpPost, ActionName("RemoveLanguage")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteCatFamilyPOST(int? id)
+        public IActionResult RemoveLanguagePOST(int? id)
         {
             if (_unitOfWork.Word.GetFirstOrDefault(u => u.LanguageId == id) != null)
             {

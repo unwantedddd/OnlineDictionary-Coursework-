@@ -14,5 +14,6 @@ namespace OnlineDictionary.Models
         [Required]
         [MaxLength(100)]
         public required string Name { get; set; }
+        public required string Code { get; set; }
     }
 }
