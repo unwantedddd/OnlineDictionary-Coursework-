@@ -1,4 +1,56 @@
-﻿@{
+﻿@using OnlineDictionary.Models;
+@model IEnumerable<OnlineDictionary.Models.Word>
+@{
+    ViewData["Title"] = "Dictionary";
+    var language = Context.Request.Query["language"];
+    var viewModel = ViewBag.LanguageCatalog as List<Language>;
+    var search = Context.Request.Query["search"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-Dictionary
+
+<h1 style="text-align: center;" class="pt-3">@ViewData["Title"]</h1>
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center mt-4">
+        <strong>Нічого не знайдено!</strong> Спробуйте змінити запит або вибрати інші фільтри.
+    </div>
+}
+<form method="get" class="mb-4">
+        <div class="col-md-3">
+            <label for="language" class="form-label">Language</label>
+            <select id="language" name="language" class="form-select">
+                <option value="">Any</option>
+                @if (viewModel != null)
+                {
+                    @foreach (var item in viewModel)
+                    {
+                        <option value="@item.Name" selected="@(language == item.Name)">@item.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    <button type="submit" class="btn btn-primary mt-3 w-100">Apply filter</button>
+</form>
+
+<div class="row">
+    @foreach (var obj in Model)
+    {
+        <div class="col-sm-4 mb-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <span class="fw-bold">@obj.Name</span>
+                        <br>
+                        @if (obj.Language != null)
+                        {
+                            <span class="text-muted">@obj.Language.Name</span>
+                        }
+                        <br>
+                        <span class="text-muted">@obj.Description</span>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    }
+</div>

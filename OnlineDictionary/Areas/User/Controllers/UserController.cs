@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using OnlineDictionary.DataAccess.Repository.IRepository;
 using OnlineDictionary.Models;
 using OnlineDictionary.Models.ViewModels;
@@ -23,10 +24,39 @@ namespace OnlineDictionary.Areas.User.Controllers
             _unitOfWork = unitOfWork;
             _googleTranslateService = googleTranslateService;
         }
-        public IActionResult Dictionary()
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            return View();
+            ViewData["LanguageCatalog"] = _unitOfWork.Language.GetAllAsNoTracking().ToList();
         }
+        public IActionResult Dictionary(string? language, string? search)
+        {
+
+            IEnumerable<Word> words = _unitOfWork.Word.GetAll(includeProperties: "Language");
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                string lowerSearch = search.ToLower();
+                words = words.Where(u => u.Name.ToLower().Contains(lowerSearch) ||
+                                       (!string.IsNullOrEmpty(u.Description) && u.Description.ToLower().Contains(lowerSearch)));
+            }
+
+
+            if (!string.IsNullOrEmpty(language))
+            {
+                string lowerLanguage = language.ToLowerInvariant();
+                words = words.Where(u => u.Language != null && u.Language.Name.ToLowerInvariant() == lowerLanguage);
+            }
+
+            return View(words);
+        }
+
+        [HttpPost, ActionName("Dictionary")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DictionaryPOST(string? language)
+        {
+            return RedirectToAction("Dictionary", language);
+        }
+
         public class TranslateRequest
         {
             public string Text { get; set; }
@@ -44,15 +74,6 @@ namespace OnlineDictionary.Areas.User.Controllers
             };
             return View(wordVM);
         }
-
-        // POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Translate([FromBody] TranslateRequest request)
-        //{
-        //    var translatedText = _googleTranslateService.Translate(request.Text, request.Language);
-        //    return Json(new { translatedText });
-        //}
 
         [HttpPost]
         public async Task<IActionResult> Translate([FromBody] TranslateRequest request)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -29,7 +30,8 @@ namespace OnlineDictionary.Utility
 
             try
             {
-                var response = await _httpClient.PostAsJsonAsync(url, requestData);
+                var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync(url, content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -45,7 +47,6 @@ namespace OnlineDictionary.Utility
                 }
                 else
                 {
-                    // Логування помилки
                     var errorResponse = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Google Translate API error: {errorResponse}");
                 }

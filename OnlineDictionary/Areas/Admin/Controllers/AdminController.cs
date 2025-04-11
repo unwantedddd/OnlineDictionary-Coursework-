@@ -67,7 +67,7 @@ namespace OnlineDictionary.Areas.Admin.Controllers
 
                 _unitOfWork.Word.Add(word);
                 _unitOfWork.Save();
-                TempData["success"] = "Wors added succsessfully!";
+                TempData["success"] = "Word added succsessfully!";
                 return RedirectToAction("ManageWords");
             }
             return View(obj);
@@ -114,7 +114,7 @@ namespace OnlineDictionary.Areas.Admin.Controllers
 
                 _unitOfWork.Word.Update(word);
                 _unitOfWork.Save();
-                TempData["success"] = "Word added successfully!";
+                TempData["success"] = "Word updated successfully!";
                 return RedirectToAction("ManageWords");
             }
             return View(obj);
@@ -150,7 +150,6 @@ namespace OnlineDictionary.Areas.Admin.Controllers
             TempData["success"] = "Word deleted succsessfully!";
             return RedirectToAction("ManageWords");
         }
-
 
         // ---------------------------------- LANGUAGE -----------------------------------
         public IActionResult ManageLanguage()

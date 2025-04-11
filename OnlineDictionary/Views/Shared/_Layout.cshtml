@@ -4,7 +4,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -23,12 +22,12 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid d-flex align-items-center">
+            <div class="container-fluid d-flex justify-content-between align-items-center w-100">
+
                 <div class="d-flex align-items-center">
                     <a class="navbar-brand d-flex align-items-center" asp-area="Home" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-book mx-4"></i>Lexigma
                     </a>
-
                     @if (user != null)
                     {
                         <a class="dictionary ms-3" style="text-decoration: none; color: inherit;" asp-area="User" asp-controller="User" asp-action="Dictionary">
@@ -37,49 +36,52 @@
                         <a class="translate ms-4" style="text-decoration: none; color: inherit;" asp-area="User" asp-controller="User" asp-action="Translate">
                             Translate
                         </a>
-                        
                     }
                 </div>
+
                 @if (user != null)
                 {
-                    <form method="get" action="" class="d-flex w-50 justify-content-center">
-                        <i class="bi bi-search fs-4 me-1"></i>
-                        <input class="form-control rounded-4 bg-white text-dark w-50" type="text" name="search" placeholder="Enter your request" />
-                    </form>
-                    <div class="flex-grow-1"></div>
+                    @if (Context.Request.Path.Value != "/")
+                    {
+                        <form method="get"
+                              action="@Url.Action("Dictionary", "User", new { area = "User" })"
+                              class="d-flex align-items-center justify-content-center"
+                              style="transform: translateX(-100px);">
+                            <i class="bi bi-search fs-4 me-2"></i>
+                            <input class="form-control rounded-4 bg-white text-dark"
+                                   type="text" name="search"
+                                   placeholder="Enter your request"
+                                   style="width: 300px;" />
+                        </form>
+                    }
                 }
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                @if (user != null)
-                {
-                    @if (User.IsInRole(SD.Role_User_Admin))
+                <div class="d-flex align-items-center">
+                    @if (user != null && User.IsInRole(SD.Role_User_Admin))
                     {
-                        <a class="translate ms-4" style="text-decoration: none; color: inherit;" asp-area="Admin" asp-controller="Admin" asp-action="Index">
+                        <a class="me-3" style="text-decoration: none; color: inherit;" asp-area="Admin" asp-controller="Admin" asp-action="Index">
                             Manage dictionary
                         </a>
                     }
-                    <div class="dropdown ms-3">
-                        <button id="accountToggle" class="btn bg-white text-dark border-0 shadow-none rounded p-2" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                            <i class="bi bi-person-circle fs-2"></i>
-                        </button>
-
-                        <div class="dropdown-menu dropdown-menu-end text-center px-3" style="min-width: 200px; white-space: nowrap;">
-                            <div class="d-flex flex-column align-items-center gap-2">
-                                <a id="manage" class="nav-link text-dark fw-bold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                                    Hello @user.UserName!
-                                </a>
-
-                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                    <button id="logout" type="submit" class="btn btn-link text-dark p-0">Logout</button>
-                                </form>
+                    @if (user != null)
+                    {
+                        <div class="dropdown">
+                            <button id="accountToggle" class="btn bg-white text-dark border-0 shadow-none rounded p-2" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-2"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end text-center px-3" style="min-width: 200px; white-space: nowrap;">
+                                <div class="d-flex flex-column align-items-center gap-2">
+                                    <a id="manage" class="nav-link text-dark fw-bold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                        Hello @user.UserName!
+                                    </a>
+                                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button id="logout" type="submit" class="btn btn-link text-dark p-0">Logout</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </nav>
 
@@ -93,11 +95,28 @@
             </div>
         }
     }
+    @if (user != null)
+    {
+        @if (Context.Request.Path == "/") 
+        {
+            <div class="d-flex flex-column justify-content-center align-items-center text-center" style="height: 80dvh; overflow: hidden;">
+                <h1 class="mb-4 fw-bold" style="font-size: 3rem;">Lexigma</h1>
+
+                <form method="get" action="@Url.Action("Dictionary", "User", new { area = "User" })"
+                      class="d-flex align-items-center bg-white p-3 shadow rounded-4"
+                      style="min-width: 400px;">
+                    <i class="bi bi-search fs-4 me-2"></i>
+                    <input class="form-control border-0 shadow-none w-100" type="text" name="search" placeholder="Enter your request" />
+                </form>
+            </div>
+        }
+    }
+
     <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
