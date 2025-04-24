@@ -58,6 +58,17 @@ namespace OnlineDictionary.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existingWord = _unitOfWork.Word.GetFirstOrDefault(
+                    w => w.Name == obj.Name && w.LanguageId == obj.LanguageId
+                );
+
+                if (existingWord != null)
+                {
+                    ModelState.AddModelError("Name", "Such a word already exists for this language.");
+                    obj.Languages = _unitOfWork.Language.GetAll();
+                    return View(obj);
+                }
+
                 Word word = new()
                 {
                     Name = obj.Name,
@@ -67,11 +78,14 @@ namespace OnlineDictionary.Areas.Admin.Controllers
 
                 _unitOfWork.Word.Add(word);
                 _unitOfWork.Save();
-                TempData["success"] = "Word added succsessfully!";
+                TempData["success"] = "Word added successfully!";
                 return RedirectToAction("ManageWords");
             }
+
+            obj.Languages = _unitOfWork.Language.GetAll();
             return View(obj);
         }
+
         public IActionResult EditWord(int? id)
         {
             if (id == null || id == 0)
@@ -168,13 +182,33 @@ namespace OnlineDictionary.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existingLanguage = _unitOfWork.Language.GetFirstOrDefault(
+                    l => l.Name.ToLower() == obj.Name.ToLower()
+                );
+                var existingCode = _unitOfWork.Language.GetFirstOrDefault(
+                   l => l.Code.ToLower() == obj.Code.ToLower()
+               );
+
+                if (existingLanguage != null)
+                {
+                    ModelState.AddModelError("Name", "Such a language already exists.");
+                    return View(obj);
+                }
+
+                if (existingCode != null)
+                {
+                    ModelState.AddModelError("Code", "Such a code already exists.");
+                    return View(obj);
+                }
+
                 _unitOfWork.Language.Add(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Language added succsessfully!";
+                TempData["success"] = "Language added successfully!";
                 return RedirectToAction("ManageLanguage");
             }
             return View(obj);
         }
+
         public IActionResult EditLanguage(int? id)
         {
             if (id == null || id == 0)
