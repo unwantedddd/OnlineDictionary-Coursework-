@@ -34,7 +34,6 @@ builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
 var app = builder.Build();
 
-// === Seed ролей
 async Task SeedRolesAsync(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -56,7 +55,6 @@ using (var scope = app.Services.CreateScope())
     await SeedRolesAsync(services);
 }
 
-// === Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

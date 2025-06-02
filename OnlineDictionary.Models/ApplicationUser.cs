@@ -15,7 +15,5 @@ namespace OnlineDictionary.Models
         public required string Name { get; set; }
         [MaybeNull]
         public string? Phone { get; set; }
-        [MaybeNull]
-        public string? Address { get; set; }
     }
 }

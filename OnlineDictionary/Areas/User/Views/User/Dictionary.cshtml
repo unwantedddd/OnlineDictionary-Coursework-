@@ -5,7 +5,6 @@
     var language = Context.Request.Query["language"];
     var viewModel = ViewBag.LanguageCatalog as List<Language>;
     var search = Context.Request.Query["search"];
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 style="text-align: center;" class="pt-3">@ViewData["Title"]</h1>

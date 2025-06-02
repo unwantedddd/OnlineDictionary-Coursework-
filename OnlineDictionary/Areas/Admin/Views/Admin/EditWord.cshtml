@@ -1,13 +1,11 @@
-﻿@{
-}
-@model OnlineDictionary.Models.ViewModels.WordVM
+﻿@model OnlineDictionary.Models.ViewModels.WordVM
 
 <form method="post" asp-action="EditWord" enctype="multipart/form-data">
 	<div class="border p-3">
 		<h2 class="text-dark">Edit word</h2>
 		<hr />
 		<div class="d-flex justify-content-between">
-			<div class="col-8">
+			<div class="col-12">
 				<div class="form-floating mb-1">
 					<input asp-for="Name" class="form-control">
 					<label asp-for="Name"></label>
